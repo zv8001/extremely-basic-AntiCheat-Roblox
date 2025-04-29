@@ -17,14 +17,28 @@ for i,v in pairs(FakeRE) do
 		RE.OnServerEvent:Connect(function(Player)
 			if not Player:HasTag("Banned_") then
 				Player:AddTag("Banned_")
-				game.Players:BanAsync({
-					UserIds = {Player.UserId},
-					ApplyToUniverse = true,
-					Duration = -1,
-					DisplayReason = 'Banned for exploiting',
-					PrivateReason = 'Fired fake remote event (Banned for exploiting)',
-					ExcludeAltAccounts = false,
-				})
+				
+				local function BanPlayer()
+					
+					local s,e = pcall(function()
+						game.Players:BanAsync({
+							UserIds = {Player.UserId},
+							ApplyToUniverse = true,
+							Duration = -1,
+							DisplayReason = 'Banned for exploiting',
+							PrivateReason = 'Fired fake remote event (Banned for exploiting)',
+							ExcludeAltAccounts = false,
+						})
+					end)
+					
+					if not s then
+						task.wait(0.2)
+						BanPlayer()
+					end
+					
+				end
+			
+				BanPlayer()
 			end
 		end)
 	end
