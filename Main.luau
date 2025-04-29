@@ -9,10 +9,13 @@ local FakeRE = {
 }
 -- ^^^^ The more fake remote event names added here the better it works. 
 
+local REPath = game.ReplicatedStorage
+-- ^^^^ If you have a dedicated folder for remote events specify here to make them blend in more.
+
 
 for i,v in pairs(FakeRE) do
-	if not game.ReplicatedStorage:FindFirstChild(v) then
-		local RE = Instance.new("RemoteEvent",game.ReplicatedStorage)
+	if not REPath:FindFirstChild(v) then
+		local RE = Instance.new("RemoteEvent",REPath)
 		RE.Name = v
 		RE.OnServerEvent:Connect(function(Player)
 			if not Player:HasTag("Banned_") then
